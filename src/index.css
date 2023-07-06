@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Belanosima&family=Poppins:wght@300;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-blue-900 text-yellow-400 p-5;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold;
+  }
+
+  h1 {
+    @apply text-2xl sm:text-3xl md:text-4xl;
+  }
+
+  h2 {
+    @apply text-xl sm:text-2xl md:text-3xl;
+  }
+
+  li {
+    @apply cursor-pointer text-xs sm:text-sm md:text-base;
+  }
+
+  p {
+    @apply text-xs md:text-base;
+  }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+body {
+  height: 100vh;
+  background: rgb(30, 58, 138) url("/blob-scene-haikei.svg") no-repeat center;
+  background-size: cover;
+  font-family: "Poppins", sans-serif;
+}
+
+#root {
+  height: 100%;
+}
+
+.form {
+  animation-name: toFull;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+@keyframes toFull {
+  0% {
+    opacity: 0;
+    scale: 0;
+  }
+  75% {
+    scale: 1;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
