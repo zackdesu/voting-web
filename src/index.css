@@ -5,8 +5,17 @@
 @tailwind utilities;
 
 @layer base {
+  html,
   body {
-    @apply bg-blue-900 text-yellow-400 p-5;
+    @apply h-full w-full;
+  }
+
+  body {
+    @apply bg-blue-900 text-yellow-400 font-Poppins;
+  }
+
+  #root {
+    @apply h-full;
   }
 
   h1,
@@ -47,17 +56,6 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-body {
-  height: 100vh;
-  background: rgb(30, 58, 138) url("/blob-scene-haikei.svg") no-repeat center;
-  background-size: cover;
-  font-family: "Poppins", sans-serif;
-}
-
-#root {
-  height: 100%;
-}
-
 .form {
   animation-name: toFull;
   animation-duration: 1s;
@@ -79,7 +77,8 @@ body {
 }
 
 @media only screen and (max-height: 600px) {
-  body {
+  body,
+  #root {
     height: max-content;
   }
 }
