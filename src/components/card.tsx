@@ -1,7 +1,7 @@
 export default function Card() {
   return (
     <div className="mx-2 my-2">
-      <div className="lg:w-48 lg:h-64 sm:w-[10.5rem] sm:h-[14rem] w-[7.5rem] h-[10rem] flex flex-col items-center bg-blue-900 p-2 rounded justify-between sm:pb-5">
+      <div className="lg:w-48 lg:h-64 sm:w-[10.5rem] sm:h-[14rem] w-[7.5rem] h-[10rem] flex flex-col items-center bg-blue-950 p-2 rounded justify-between sm:pb-5">
         <div className="bg-black w-full h-1/2" />
         <div className="flex flex-col items-center h-1/2 w-full justify-evenly">
           <div className="text-center">
