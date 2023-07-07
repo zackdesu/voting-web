@@ -9,6 +9,7 @@ export default {
     extend: {
       fontFamily: {
         Belanosima: "Belanosima, sans-serif",
+        Poppins: "Poppins, sans-serif",
       },
     },
   },
