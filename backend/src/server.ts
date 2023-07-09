@@ -80,9 +80,8 @@ app.post("/login", async (req: Request, res: Response) => {
 function isAuthenticated(req: Request, res: Response, next: NextFunction) {
   const user = req.session.user;
 
+  console.log(req.session);
   if (!user) return res.status(403).json({ message: "Not authenticated" });
-
-  console.log(user);
 
   return next();
 }
