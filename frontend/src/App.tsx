@@ -3,6 +3,7 @@ import Background from "./components/background";
 import Form from "./pages/form";
 import Vote from "./pages/vote";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const vote = useRef<HTMLDivElement>(null);
@@ -43,6 +44,7 @@ function App() {
             <>
               <Background />
               <Form />
+              <Toaster />
             </>
           }
         />
@@ -52,6 +54,7 @@ function App() {
             <>
               <Background />
               <Vote ref={vote} />
+              <Toaster />
             </>
           }
         />
