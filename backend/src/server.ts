@@ -86,6 +86,10 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction) {
   return next();
 }
 
+app.get("/test", async (req: Request, res: Response) => {
+  res.send(req.session);
+});
+
 app.get("/part", isAuthenticated, async (req: Request, res: Response) => {
   const part = await prisma.participant.findMany();
 
