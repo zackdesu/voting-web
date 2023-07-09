@@ -41,12 +41,13 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.set("trust proxy", 1);
 app.use(
   session({
     secret: process.env.SECRET_KEY!,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 20 },
+    cookie: { maxAge: 1000 * 20, sameSite: "none", secure: true },
     store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL }),
   })
 );
