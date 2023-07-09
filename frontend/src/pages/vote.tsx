@@ -1,20 +1,15 @@
 import { forwardRef, ForwardedRef, useEffect, useState } from "react";
 import Card from "../components/card";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { api } from "../components/api";
 
 const Vote = forwardRef((_props, ref: ForwardedRef<HTMLDivElement>) => {
   const [part, setPart] = useState<any[]>([]);
   const navigate = useNavigate();
 
-  const URL =
-    import.meta.env.MODE === "development"
-      ? import.meta.env.VITE_LOCAL_API_URL
-      : import.meta.env.VITE_API_URL;
-
   useEffect(() => {
-    axios
-      .get(URL + "/part", { withCredentials: true })
+    api
+      .get("/part")
       .then((res) => setPart(res.data))
       .catch(() => navigate("/"));
   }, []);

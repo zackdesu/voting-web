@@ -1,8 +1,8 @@
 // import { Link } from "react-router-dom";
 import { FormEvent, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { api } from "../components/api";
 
 export default function Form() {
   const [name, setName] = useState("");
@@ -10,26 +10,20 @@ export default function Form() {
 
   const navigate = useNavigate();
 
-  const URL =
-    import.meta.env.MODE === "development"
-      ? import.meta.env.VITE_LOCAL_API_URL
-      : import.meta.env.VITE_API_URL;
-
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    axios
+    api
       .post(
-        URL + "/login",
+        "/login",
         { userId: id, name },
         {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
         }
       )
-      .then(() => navigate("/vote"))
+      .then(() => navigate("/"))
       .catch((err) => toast.error(err.response.data.message));
   };
 
