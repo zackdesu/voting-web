@@ -1,37 +1,71 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+// import { Link } from "react-router-dom";
+import { FormEvent, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function Form() {
-  const key = 8888;
-
+  const [name, setName] = useState("");
   const [id, setId] = useState(0);
+
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    axios
+      .post(
+        "http://localhost:3000/login",
+        { userId: id, name },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
+      .then(() => navigate("/vote"))
+      .catch((err) => toast.error(err.response.data.message));
+  };
 
   return (
     <>
-      <form className="flex flex-col items-center justify-center h-[100%] form">
-        <div className="bg-blue-950 md:px-32 md:py-28 sm:px-20 sm:py-16 px-12 py-8 flex flex-col items-center rounded border border-yellow-900 shadow-inner">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center justify-center h-[100%] form"
+      >
+        <div className="bg-blue-950 md:px-32 md:py-20 sm:px-20 sm:py-14 px-12 py-6 flex flex-col items-center rounded border border-yellow-900 shadow-inner">
           <div className="flex flex-col items-center">
-            <label htmlFor="id">
-              <h2 className="tracking-[.2em] mb-2 font-Belanosima">LOGIN</h2>
-            </label>
-            <p>Gunakan ID mu untuk masuk</p>
+            <h2 className="tracking-[.2em] mb-5 font-Belanosima">LOGIN</h2>
           </div>
+          <label htmlFor="name" className="w-full">
+            <p>Nama</p>
+          </label>
+          <input
+            type="text"
+            id="id"
+            name="id"
+            className="outline-none rounded p-3 bg-blue-900 mt-2 mb-3 font-medium focus:ring-2 ring-yellow-300 focus:border border-yellow-500 w-full"
+            onChange={(e) => setName(e.target.value)}
+            autoComplete="off"
+          />
+          <label htmlFor="id" className="w-full">
+            <p>User ID</p>
+          </label>
           <input
             type="number"
             id="id"
-            name="id"
-            className="outline-none rounded p-3 bg-blue-900 my-5 font-medium focus:ring-2 ring-yellow-300 focus:border border-yellow-500 w-full"
+            name="name"
+            className="outline-none rounded p-3 bg-blue-900 mt-2 mb-5 font-medium focus:ring-2 ring-yellow-300 focus:border border-yellow-500 w-full"
             onChange={(e) => setId(parseInt(e.target.value))}
+            autoComplete="off"
           />
-          <Link to={"/vote"} className="w-full">
-            <button
-              type="submit"
-              className="w-full px-5 py-2 bg-blue-700 hover:bg-blue-800 rounded cursor-pointer shadow-[0_8px_30px_rgb(0,0,0,0.12)] font-medium disabled:bg-blue-900"
-              disabled={id !== key}
-            >
-              Masuk
-            </button>
-          </Link>
+          <button
+            type="submit"
+            className="w-full px-5 py-2 bg-blue-700 hover:bg-blue-800 rounded cursor-pointer shadow-[0_8px_30px_rgb(0,0,0,0.12)] font-medium disabled:bg-blue-900"
+          >
+            Masuk
+          </button>
         </div>
       </form>
     </>
