@@ -56,7 +56,7 @@ app.post("/login", async (req: Request, res: Response) => {
   const result = req.body;
 
   const acc = await prisma.acc.findFirst({
-    where: { name: result.name },
+    where: { name: result.name, userId: result.userId },
   });
 
   if (!acc) return res.status(404).json({ message: "Account not found!" });
