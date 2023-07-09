@@ -23,7 +23,7 @@ export default function Form() {
           },
         }
       )
-      .then(() => navigate("/"))
+      .then(() => navigate("/vote"))
       .catch((err) => toast.error(err.response.data.message));
   };
 
