@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Acc {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  alreadyVote Boolean
+  name        String
+  age         Int
+  userId      Int
+  choice      Participant? @relation(fields: [choiceId], references: [id])
+  choiceId    String? @db.ObjectId
+}
+
+model Participant {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  vnm         String
+  image       String?
+  acc         Acc[]
+}
+
+model sessions {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  expires     DateTime
+  session     String
+}
