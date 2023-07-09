@@ -7,9 +7,14 @@ const Vote = forwardRef((_props, ref: ForwardedRef<HTMLDivElement>) => {
   const [part, setPart] = useState<any[]>([]);
   const navigate = useNavigate();
 
+  const URL =
+    import.meta.env.MODE === "development"
+      ? import.meta.env.VITE_LOCAL_API_URL
+      : import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     axios
-      .get("http://localhost:3000/part", { withCredentials: true })
+      .get(URL + "/part", { withCredentials: true })
       .then((res) => setPart(res.data))
       .catch(() => navigate("/"));
   }, []);

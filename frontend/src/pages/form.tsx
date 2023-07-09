@@ -10,12 +10,17 @@ export default function Form() {
 
   const navigate = useNavigate();
 
+  const URL =
+    import.meta.env.MODE === "development"
+      ? import.meta.env.VITE_LOCAL_API_URL
+      : import.meta.env.VITE_API_URL;
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     axios
       .post(
-        "http://localhost:3000/login",
+        URL + "/login",
         { userId: id, name },
         {
           headers: {
