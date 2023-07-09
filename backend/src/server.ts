@@ -2,8 +2,7 @@ require("dotenv").config();
 
 import express, { Express, NextFunction, Request, Response } from "express";
 import { prisma } from "../libs/prisma";
-import cors from "cors";
-import session, { Session } from "express-session";
+import session from "express-session";
 import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
 
@@ -16,12 +15,30 @@ declare module "express-session" {
   }
 }
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const allowedOrigins = [
+    "https://voting-web-mu.vercel.app",
+    "http://localhost:5173",
+  ];
+  const origin = req.headers.origin;
+
+  if (origin) {
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+    }
+  }
+  // res.setHeader(
+  //   "Access-Control-Allow-Origin",
+  //   "http://localhost:5173, https://voting-web-mu.vercel.app"
+  // );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  return next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
