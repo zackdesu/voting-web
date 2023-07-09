@@ -46,7 +46,7 @@ app.use(
     secret: process.env.SECRET_KEY!,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 20 },
+    cookie: { maxAge: 1000 * 20, secure: "auto", sameSite: "none" },
     store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL }),
   })
 );
@@ -85,10 +85,6 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction) {
 
   return next();
 }
-
-app.get("/test", async (req: Request, res: Response) => {
-  res.send(req.session);
-});
 
 app.get("/part", isAuthenticated, async (req: Request, res: Response) => {
   const part = await prisma.participant.findMany();
