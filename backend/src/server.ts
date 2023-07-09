@@ -69,6 +69,7 @@ app.post("/login", async (req: Request, res: Response) => {
 
       req.session.save((err) => {
         if (err) throw err;
+        console.log(req.session.user);
         return res.status(200).json(req.session.user);
       });
     } catch (error) {
