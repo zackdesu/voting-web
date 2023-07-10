@@ -41,16 +41,24 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.set("trust proxy", 1);
-app.use(
-  session({
-    secret: process.env.SECRET_KEY!,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 1000 * 20, sameSite: "none", secure: true },
-    store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL }),
-  })
-);
+
+type SameSite = boolean | "lax" | "none" | "strict";
+
+const sessConfig = {
+  secret: process.env.SECRET_KEY!,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 1000 * 20, secure: false, sameSite: false as SameSite },
+  store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL }),
+};
+
+if (app.get("env") === "production") {
+  app.set("trust proxy", 1);
+  sessConfig.cookie.secure = true;
+  sessConfig.cookie.sameSite = "none" as SameSite;
+}
+
+app.use(session(sessConfig));
 app.use(cookieParser());
 
 console.log(app.get("env"));
