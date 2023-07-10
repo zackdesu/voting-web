@@ -93,7 +93,8 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction) {
   const user = req.session.user;
 
   console.log(req.session);
-  if (!user) return res.status(403).json({ message: "Not authenticated" });
+  if (!user)
+    return res.status(403).json({ message: "Session expired, please login!" });
 
   return next();
 }
@@ -108,15 +109,54 @@ app.get("/part", isAuthenticated, async (req: Request, res: Response) => {
   res.json(part).status(200);
 });
 
-app.get("/checkAuth", async (req: Request, res: Response) => {
-  const session = await prisma.sessions.findMany();
+app.post(
+  "/selection/:id",
+  isAuthenticated,
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
 
-  session.forEach((e) => {
-    console.log(JSON.parse(e.session));
-  });
+    if (!req.session.user)
+      return res
+        .status(403)
+        .json({ message: "Session expired, please login!" });
 
-  return res.json({ session, authenticated: true }).status(200);
-});
+    if (req.session.user.alreadyVote)
+      return res
+        .status(403)
+        .json({ message: "You already vote the participants!" });
+
+    const updateChoice = await prisma.acc.update({
+      where: {
+        id: req.session.user.id,
+      },
+      data: {
+        alreadyVote: true,
+        choice: {
+          connect: {
+            id,
+          },
+        },
+      },
+    });
+
+    req.session.regenerate((err) => {
+      try {
+        if (err) throw err;
+
+        req.session.user = updateChoice;
+
+        req.session.save((err) => {
+          if (err) throw err;
+          return res
+            .status(200)
+            .json({ user: req.session.user, message: "Vote successful!" });
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  }
+);
 
 app.get("/acc", async (req: Request, res: Response) => {
   const acc = await prisma.acc.findMany();
@@ -125,6 +165,36 @@ app.get("/acc", async (req: Request, res: Response) => {
     return res.status(500).json({ message: "No Account in Database!" });
   }
   res.json(acc).status(200);
+});
+
+app.get("/allparts", async (req: Request, res: Response) => {
+  const parts = await prisma.participant.findMany({
+    include: {
+      acc: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  });
+
+  const partsWithAccCount = parts.map((part) => ({
+    ...part,
+    accCount: part.acc.length,
+  }));
+
+  res.json(partsWithAccCount);
+});
+
+app.get("/reset", async (req: Request, res: Response) => {
+  const reset = await prisma.acc.updateMany({
+    data: {
+      alreadyVote: false,
+      choiceId: null,
+    },
+  });
+  res.json(reset);
 });
 
 app.get("/", (req: Request, res: Response) => {
