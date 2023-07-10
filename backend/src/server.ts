@@ -53,6 +53,8 @@ app.use(
 );
 app.use(cookieParser());
 
+console.log(app.get("env"));
+
 app.post("/login", async (req: Request, res: Response) => {
   const result = req.body;
 
