@@ -23,7 +23,14 @@ const Vote = forwardRef((_props, ref: ForwardedRef<HTMLDivElement>) => {
         </div>
         <div className="mt-10 flex flex-wrap justify-center lg:w-[738px] lg:h-[544px] sm:w-[600px] sm:h-[480px]">
           {part.map((e, i) => (
-            <Card name={e.name} src={e.image} key={i} id={e.id} />
+            <Card
+              name={e.name}
+              src={e.image}
+              key={i}
+              id={e.id}
+              visi={e.visi}
+              misi={e.misi}
+            />
           ))}
         </div>
       </div>
