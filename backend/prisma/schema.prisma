@@ -20,7 +20,8 @@ model Acc {
 model Participant {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  vnm         String
+  visi        String[]
+  misi        String[]
   image       String?
   acc         Acc[]
 }
